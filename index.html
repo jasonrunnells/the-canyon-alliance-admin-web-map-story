@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Basic Meta Tags -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Page Title -->
+    <title>The Canyon Alliance</title>
+    
+    <!-- CSS Links -->
+    <link rel="stylesheet" href="/css/style.css" />
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;700&display=swap" rel="stylesheet" />
+</head>
+
+<body>
+    <!-- Main Wrapper -->
+    <div class="site-wrapper">
+        <!-- HEADER SECTION -->
+        <header class="site-header">
+            <div class="header-inner">
+                <!-- Left Header Content -->
+                <div class="header-left">
+                    <a href="https://jasonrunnells.github.io/jasonrunnells/" style="text-decoration: none; color: inherit;">Jason Runnells.</a>
+                    <span class="latlong">33.9941° N, 118.4527° W</span>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button class="hamburger" id="hamburger">&#9776;</button>
+                
+                <!-- Navigation Menu -->
+                <nav class="site-nav" id="site-nav">
+                    <a href="https://jasonrunnells.github.io/jasonrunnells/">Home <span class="icon">✦</span></a>
+                    <a href="https://jasonrunnells.github.io/portfolio/">Portfolio <span class="icon">✦</span></a>
+                    <div class="section-separator-menu"></div>
+                    <a href="#overview">Overview</a>
+                    <a href="#tools">Tools</a>
+                    <a href="#map">Map</a>
+                </nav>
+            </div>
+        </header>
+
+        <!-- TITLE SECTION -->
+        <h1 class="reveal">The Canyon Alliance Administrative Web Map</h1>
+        <h3 class="subtitle reveal2">A 3D mapping project developed to support emergency planning, community coordination, and wildfire response in the Santa Monica Mountains region.</h3>
+        <p class="reveal2">Jason Runnells <span style="font-weight: 800;">|</span> May, 2025</p>
+        <div class="section-separator-full"></div>
+
+        <!-- OVERVIEW SECTION -->
+        <h2 id="overview" class="reveal">Overview</h2>
+        <div class="section-separator reveal"></div>
+
+        <p class="width-75 reveal2">
+            As a GIS intern for The Canyon Alliance, I was responsible for designing a custom geodatabase and interactive 3D web map to support local fire departments, first responders, and community leaders in the aftermath of the 2025 Palisades Fire. The project emerged from an urgent need to improve coordination and situational awareness in one of Los Angeles County's highest-risk wildland-urban interface zones.
+        </p>
+
+        <p class="width-75 reveal2">
+            This web-based tool visualizes residential structures, property parcels, and neighborhood boundaries within the Canyon Alliance service area. It is intended to assist with fire preparedness, evacuation route planning, and infrastructure response by offering a spatial reference that can be accessed easily and updated as needed. 
+        </p>
+
+        <p class="width-75 reveal2">
+            What is shown here is a public-facing version that mirrors the layout and spatial fidelity of the internal administrative map used by Alliance leaders. Sensitive personal data submitted by residents has been removed in this version. The internal version is securely maintained and only accessible by authorized Canyon Alliance personnel for operational use.
+        </p>
+
+        <p class="width-75 reveal2">
+            While simplified, this version remains fully accurate in its geometry and serves as a general-use model for visual planning, community engagement, and inter-agency coordination.
+        </p>
+
+        <!-- TOOLS SECTION -->
+        <h3 id="tools" class="width-75 reveal2" style="margin-top: 3rem;">
+            <strong>Tools & Technologies Used</strong>
+        </h3>
+        <p class="width-75 reveal2">
+            The following tools and technologies were used to build the database, export geographic layers, and develop the browser-based visualization:
+        </p>
+
+        <ul id="map" class="styled-list reveal2 width-50" style="margin-top: 1rem; margin-bottom: 2rem;">
+            <li><strong>ArcGIS Pro</strong>: Used for spatial data creation, attribute management, and exporting web-ready GeoJSON layers.</li>
+            <li><strong>MapLibre GL JS</strong>: Rendered 3D structures and styled parcel data directly in the browser using open-source mapping.</li>
+            <li><strong>Turf.js</strong>: Enabled lightweight spatial analysis and geometry functions like bounding box filtering.</li>
+            <li><strong>GeoJSON</strong>: Served as the interchange format for geographic layers between ArcGIS and the MapLibre environment.</li>
+            <li><strong>Custom HTML, CSS & JavaScript</strong>: Built the front-end interface, responsive layout, and user interactions by hand.</li>
+        </ul>
+
+        <!-- MAP EMBED SECTION -->
+        <iframe src="https://jasonrunnells.github.io/canyon-alliance-3d-map/" 
+            width="100%"
+            height="600px"
+            style="border: none; margin-bottom: 4rem; border-radius: 10px;"
+            title="Interactive 3D Map of The Canyon Alliance Area">
+        </iframe>
+
+    </div> <!-- /site-wrapper -->
+
+    <!-- JAVASCRIPT -->
+    <script>
+        // ======================
+        // MOBILE MENU FUNCTIONALITY
+        // ======================
+        const hamburger = document.getElementById('hamburger');
+        const nav = document.getElementById('site-nav');
+
+        // Toggle mobile menu
+        hamburger.addEventListener('click', () => {
+            nav.classList.toggle('open');
+            hamburger.textContent = nav.classList.contains('open') ? '✕' : '☰';
+        });
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.site-nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                nav.classList.remove('open');
+                hamburger.textContent = '☰';
+            });
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!nav.contains(e.target) && !hamburger.contains(e.target)) {
+                nav.classList.remove('open');
+                hamburger.textContent = '☰';
+            }
+        });
+
+        // ======================
+        // SCROLL REVEAL ANIMATIONS
+        // ======================
+        function observeReveal(selector) {
+            const elements = document.querySelectorAll(selector);
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            elements.forEach(el => observer.observe(el));
+        }
+
+        // Initialize reveal animations
+        observeReveal('.reveal');
+        observeReveal('.reveal2');
+
+        // ======================
+        // LIGHTBOX FUNCTIONALITY
+        // ======================
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxCaption = document.getElementById('lightbox-caption');
+        const closeBtn = document.querySelector('.lightbox-close');
+
+        // Set up lightbox triggers (if any exist on page)
+        document.querySelectorAll('.lightbox-trigger').forEach(img => {
+            img.addEventListener('click', () => {
+                lightboxImg.src = img.src;
+                lightboxImg.alt = img.alt;
+                lightboxCaption.textContent = img.dataset.caption || '';
+                lightbox.classList.add('show');
+            });
+        });
+
+        // Close lightbox
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox || e.target === closeBtn) {
+                lightbox.classList.remove('show');
+                lightboxImg.src = '';
+                lightboxCaption.textContent = '';
+            }
+        });
+
+        // Close lightbox with ESC key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                lightbox.classList.remove('show');
+                lightboxImg.src = '';
+                lightboxCaption.textContent = '';
+            }
+        });
+    </script>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <p class="footer-text">© 2025 Jason Runnells</p>
+        </div>
+    </footer>
+</body>
+</html>
