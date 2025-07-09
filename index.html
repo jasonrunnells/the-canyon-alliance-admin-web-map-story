@@ -93,93 +93,121 @@
 
     </div> <!-- /site-wrapper -->
 
-    <!-- JAVASCRIPT -->
-    <script>
-        // ======================
-        // MOBILE MENU FUNCTIONALITY
-        // ======================
-        const hamburger = document.getElementById('hamburger');
-        const nav = document.getElementById('site-nav');
+<!-- JAVASCRIPT -->
+<script>
+  // ======================
+  // MOBILE NAVIGATION FUNCTIONALITY
+  // ======================
+  const hamburger = document.getElementById('hamburger');
+  const siteNav = document.getElementById('site-nav');
+  const mobileNavOverlay = document.createElement('div');
+  mobileNavOverlay.className = 'mobile-nav-overlay';
+  document.body.appendChild(mobileNavOverlay);
 
-        // Toggle mobile menu
-        hamburger.addEventListener('click', () => {
-            nav.classList.toggle('open');
-            hamburger.textContent = nav.classList.contains('open') ? '✕' : '☰';
-        });
+  hamburger.addEventListener('click', () => {
+    const isExpanded = hamburger.getAttribute('aria-expanded') === 'true';
+    hamburger.setAttribute('aria-expanded', !isExpanded);
+    siteNav.setAttribute('aria-hidden', isExpanded);
+    mobileNavOverlay.classList.toggle('active', !isExpanded);
+    document.body.style.overflow = isExpanded ? '' : 'hidden';
+  });
 
-        // Close mobile menu when clicking a link
-        document.querySelectorAll('.site-nav a').forEach(link => {
-            link.addEventListener('click', () => {
-                nav.classList.remove('open');
-                hamburger.textContent = '☰';
-            });
-        });
+  mobileNavOverlay.addEventListener('click', () => {
+    hamburger.setAttribute('aria-expanded', 'false');
+    siteNav.setAttribute('aria-hidden', 'true');
+    mobileNavOverlay.classList.remove('active');
+    document.body.style.overflow = '';
+  });
 
-        // Close mobile menu when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!nav.contains(e.target) && !hamburger.contains(e.target)) {
-                nav.classList.remove('open');
-                hamburger.textContent = '☰';
-            }
-        });
+  document.querySelectorAll('.site-nav a').forEach(link => {
+    link.addEventListener('click', () => {
+      hamburger.setAttribute('aria-expanded', 'false');
+      siteNav.setAttribute('aria-hidden', 'true');
+      mobileNavOverlay.classList.remove('active');
+      document.body.style.overflow = '';
+    });
+  });
 
-        // ======================
-        // SCROLL REVEAL ANIMATIONS
-        // ======================
-        function observeReveal(selector) {
-            const elements = document.querySelectorAll(selector);
-            const observer = new IntersectionObserver(entries => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('active');
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.1 });
-            elements.forEach(el => observer.observe(el));
+  // ======================
+  // SCROLL REVEAL ANIMATIONS
+  // ======================
+  function observeReveal(selector) {
+    const elements = document.querySelectorAll(selector);
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+          observer.unobserve(entry.target);
         }
+      });
+    }, { threshold: 0.3 });
+    elements.forEach(el => observer.observe(el));
+  }
 
-        // Initialize reveal animations
-        observeReveal('.reveal');
-        observeReveal('.reveal2');
+  observeReveal('.reveal');
+  observeReveal('.reveal2');
 
-        // ======================
-        // LIGHTBOX FUNCTIONALITY
-        // ======================
-        const lightbox = document.getElementById('lightbox');
-        const lightboxImg = document.getElementById('lightbox-img');
-        const lightboxCaption = document.getElementById('lightbox-caption');
-        const closeBtn = document.querySelector('.lightbox-close');
-
-        // Set up lightbox triggers (if any exist on page)
-        document.querySelectorAll('.lightbox-trigger').forEach(img => {
-            img.addEventListener('click', () => {
-                lightboxImg.src = img.src;
-                lightboxImg.alt = img.alt;
-                lightboxCaption.textContent = img.dataset.caption || '';
-                lightbox.classList.add('show');
-            });
+  // ======================
+  // SMOOTH SCROLLING FOR ANCHOR LINKS
+  // ======================
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      if (this.href.includes('jasonrunnells.github.io')) return;
+      e.preventDefault();
+      const targetId = this.getAttribute('href');
+      if (targetId === '#') return;
+      const targetElement = document.querySelector(targetId);
+      if (targetElement) {
+        window.scrollTo({
+          top: targetElement.offsetTop - 80,
+          behavior: 'smooth'
         });
+      }
+    });
+  });
 
-        // Close lightbox
-        lightbox.addEventListener('click', (e) => {
-            if (e.target === lightbox || e.target === closeBtn) {
-                lightbox.classList.remove('show');
-                lightboxImg.src = '';
-                lightboxCaption.textContent = '';
-            }
-        });
+  // ======================
+  // LIGHTBOX FUNCTIONALITY (Retained)
+  // ======================
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightbox-img');
+  const lightboxCaption = document.getElementById('lightbox-caption');
+  const closeBtn = document.querySelector('.lightbox-close');
 
-        // Close lightbox with ESC key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                lightbox.classList.remove('show');
-                lightboxImg.src = '';
-                lightboxCaption.textContent = '';
-            }
-        });
-    </script>
+  document.querySelectorAll('.lightbox-trigger').forEach(img => {
+    img.addEventListener('click', () => {
+      lightboxImg.src = img.src;
+      lightboxImg.alt = img.alt;
+      lightboxCaption.textContent = img.dataset.caption || '';
+      lightbox.classList.add('show');
+    });
+  });
 
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox || e.target === closeBtn) {
+      lightbox.classList.remove('show');
+      lightboxImg.src = '';
+      lightboxCaption.textContent = '';
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      lightbox.classList.remove('show');
+      lightboxImg.src = '';
+      lightboxCaption.textContent = '';
+    }
+  });
+</script>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <p class="footer-text">© 2025 Jason Runnells</p>
+  </div>
+</footer>
+</body>
+</html>
     <!-- FOOTER -->
     <footer class="site-footer">
         <div class="footer-inner">
