@@ -9,7 +9,7 @@
     <title>The Canyon Alliance</title>
     
     <!-- CSS Links -->
-    <link rel="stylesheet" href="https://jasonrunnells.github.io/css/style.css" />
+<link rel="stylesheet" href="https://jasonrunnells.github.io/css/style.css">    
     
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:wght@400;700&display=swap" rel="stylesheet" />
@@ -96,111 +96,7 @@
     </div> <!-- /site-wrapper -->
 
 <!-- JAVASCRIPT -->
-<script>
-  // ======================
-  // MOBILE NAVIGATION FUNCTIONALITY
-  // ======================
-  const hamburger = document.getElementById('hamburger');
-  const siteNav = document.getElementById('site-nav');
-  const mobileNavOverlay = document.createElement('div');
-  mobileNavOverlay.className = 'mobile-nav-overlay';
-  document.body.appendChild(mobileNavOverlay);
-
-  hamburger.addEventListener('click', () => {
-    const isExpanded = hamburger.getAttribute('aria-expanded') === 'true';
-    hamburger.setAttribute('aria-expanded', !isExpanded);
-    siteNav.setAttribute('aria-hidden', isExpanded);
-    mobileNavOverlay.classList.toggle('active', !isExpanded);
-    document.body.style.overflow = isExpanded ? '' : 'hidden';
-  });
-
-  mobileNavOverlay.addEventListener('click', () => {
-    hamburger.setAttribute('aria-expanded', 'false');
-    siteNav.setAttribute('aria-hidden', 'true');
-    mobileNavOverlay.classList.remove('active');
-    document.body.style.overflow = '';
-  });
-
-  document.querySelectorAll('.site-nav a').forEach(link => {
-    link.addEventListener('click', () => {
-      hamburger.setAttribute('aria-expanded', 'false');
-      siteNav.setAttribute('aria-hidden', 'true');
-      mobileNavOverlay.classList.remove('active');
-      document.body.style.overflow = '';
-    });
-  });
-
-  // ======================
-  // SCROLL REVEAL ANIMATIONS
-  // ======================
-  function observeReveal(selector) {
-    const elements = document.querySelectorAll(selector);
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('active');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.3 });
-    elements.forEach(el => observer.observe(el));
-  }
-
-  observeReveal('.reveal');
-  observeReveal('.reveal2');
-
-  // ======================
-  // SMOOTH SCROLLING FOR ANCHOR LINKS
-  // ======================
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-      if (this.href.includes('jasonrunnells.github.io')) return;
-      e.preventDefault();
-      const targetId = this.getAttribute('href');
-      if (targetId === '#') return;
-      const targetElement = document.querySelector(targetId);
-      if (targetElement) {
-        window.scrollTo({
-          top: targetElement.offsetTop - 80,
-          behavior: 'smooth'
-        });
-      }
-    });
-  });
-
-  // ======================
-  // LIGHTBOX FUNCTIONALITY (Retained)
-  // ======================
-  const lightbox = document.getElementById('lightbox');
-  const lightboxImg = document.getElementById('lightbox-img');
-  const lightboxCaption = document.getElementById('lightbox-caption');
-  const closeBtn = document.querySelector('.lightbox-close');
-
-  document.querySelectorAll('.lightbox-trigger').forEach(img => {
-    img.addEventListener('click', () => {
-      lightboxImg.src = img.src;
-      lightboxImg.alt = img.alt;
-      lightboxCaption.textContent = img.dataset.caption || '';
-      lightbox.classList.add('show');
-    });
-  });
-
-  lightbox.addEventListener('click', (e) => {
-    if (e.target === lightbox || e.target === closeBtn) {
-      lightbox.classList.remove('show');
-      lightboxImg.src = '';
-      lightboxCaption.textContent = '';
-    }
-  });
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      lightbox.classList.remove('show');
-      lightboxImg.src = '';
-      lightboxCaption.textContent = '';
-    }
-  });
-</script>
+<script src="https://jasonrunnells.github.io/js/main.js"></script>
 
 <!-- FOOTER -->
 <footer class="site-footer">
